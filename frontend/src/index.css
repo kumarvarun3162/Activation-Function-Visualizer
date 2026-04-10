@@ -1,9 +1,133 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@import url("https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600&family=JetBrains+Mono:wght@300;400;500&display=swap");
 
-body{
-  background:#0b0b0b;
-  color:white;
-  font-family:Inter, sans-serif;
+@theme {
+  /* Backgrounds — deep navy, not harsh black */
+  --color-bg:        #080e18;
+  --color-surface:   #0c1520;
+  --color-card:      #0f1c2d;
+  --color-card-hover:#122035;
+  --color-input:     #0a1220;
+
+  /* Accent */
+  --color-red:       #e8312a;
+  --color-red-light: #f0554f;
+  --color-red-dim:   #1a0705;
+  --color-red-border:#6b1a17;
+
+  /* Text */
+  --color-text:      #c8d8ea;
+  --color-text-dim:  #4d6478;
+  --color-text-faint:#263547;
+
+  /* Borders */
+  --color-border:    #162030;
+  --color-border-hi: #1e3048;
+
+  /* Fonts */
+  --font-sans: "Sora", ui-sans-serif, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, monospace;
 }
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body, #root {
+  min-height: 100%;
+  font-family: var(--font-sans);
+  background: var(--color-bg);
+  color: var(--color-text);
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Subtle radial glow top-left — atmosphere without noise */
+body::before {
+  content: "";
+  position: fixed;
+  top: -20%;
+  left: -10%;
+  width: 55vw;
+  height: 55vw;
+  background: radial-gradient(circle, rgba(232,49,42,0.05) 0%, transparent 65%);
+  pointer-events: none;
+  z-index: 0;
+}
+
+#root { position: relative; z-index: 1; }
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 4px; height: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: var(--color-red-border); border-radius: 4px; }
+
+/* ── Keyframes ── */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(14px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes blink  {
+  0%,100% { opacity: 1; } 50% { opacity: 0.25; }
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+@keyframes slideDown {
+  from { opacity: 0; transform: translateY(-8px); max-height: 0; }
+  to   { opacity: 1; transform: translateY(0); max-height: 800px; }
+}
+
+/* ── Animation helpers ── */
+.fade-up  { animation: fadeUp  0.4s cubic-bezier(0.22, 1, 0.36, 1) both; }
+.fade-in  { animation: fadeIn  0.3s ease both; }
+.d1 { animation-delay: 0.06s; }
+.d2 { animation-delay: 0.12s; }
+.d3 { animation-delay: 0.18s; }
+.d4 { animation-delay: 0.24s; }
+.d5 { animation-delay: 0.30s; }
+
+.blink { animation: blink 1.6s ease-in-out infinite; }
+.spin  { animation: spin  1s linear infinite; }
+
+/* ── Card ── */
+.card {
+  background: var(--color-card);
+  border: 1px solid var(--color-border);
+  border-radius: 12px;
+}
+.card-hover:hover {
+  background: var(--color-card-hover);
+  border-color: var(--color-border-hi);
+  transition: background 0.2s, border-color 0.2s;
+}
+
+/* ── Section label ── */
+.section-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--color-text-dim);
+}
+
+/* ── Input ── */
+.field-input {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--color-input);
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  color: var(--color-text);
+  font-family: var(--font-mono);
+  font-size: 13px;
+  transition: border-color 0.18s, box-shadow 0.18s;
+}
+.field-input:focus {
+  outline: none;
+  border-color: var(--color-red-border);
+  box-shadow: 0 0 0 3px rgba(232,49,42,0.08);
+}
+.field-input::-webkit-inner-spin-button,
+.field-input::-webkit-outer-spin-button { opacity: 0.3; }
+
+/* ── Plotly overrides ── */
+.js-plotly-plot .plotly .main-svg { background: transparent !important; }

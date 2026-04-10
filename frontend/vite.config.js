@@ -1,12 +1,17 @@
-import { defineConfig } from 'vite'
-// import tailwindcss from '@tailwindcss/vite'
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react";
+import tailwindcss from "@tailwindcss/vite";
 
-import react from '@vitejs/plugin-react'
+// Tailwind v4 (2026): configuration is CSS-first.
+// No tailwind.config.js needed — theme lives in index.css under @theme {}.
+// Install: npm install tailwindcss @tailwindcss/vite @vitejs/plugin-react
 
-// https://vite.dev/config/
 export default defineConfig({
-  plugins: [react()
-    // , tailwindcss()
-
-  ]
-})
+  plugins: [
+    tailwindcss(),   // must come before react()
+    react(),
+  ],
+  server: {
+    port: 5173,
+  },
+});
